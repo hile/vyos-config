@@ -1,0 +1,12 @@
+/build/
+/dist/
+/doc/
+.DS_Store
+/.idea/
+/.vscode/
+/.pytest_cache/
+/.cache/
+/.eggs/
+.*.swp
+*.pyc
+*.egg-info/
