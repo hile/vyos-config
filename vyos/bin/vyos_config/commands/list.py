@@ -1,4 +1,7 @@
 
+import argparse
+import sys
+
 from .base import VyOSCliCommand
 
 
@@ -11,7 +14,7 @@ class ListCommand(VyOSCliCommand):
 
     def __register_arguments__(self, parser):
         parser.add_argument('-p', '--prefix', help='Prefix to print')
-        parser.add_argument('path', help='Configuration file path')
+        parser.add_argument('path', type=argparse.FileType('r'), default=sys.stdin, help='Configuration file path')
         return parser
 
     def run(self, args):

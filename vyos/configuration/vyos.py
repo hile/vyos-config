@@ -110,7 +110,6 @@ class VyOSConfig:
     Parser for VyOS configuration
     """
     def __init__(self):
-        self.path = None
         self.lines = []
         self.__config__ = None
         self.__comment_lines__ = None
@@ -121,22 +120,20 @@ class VyOSConfig:
     def __next__(self):
         return next(self.__config__)
 
-    def load(self, path):
-        self.path = path
+    def load(self, fd):
         self.lines = []
         self.__config__ = VyOSConfigSection()
         self.__comment_lines__ = []
         config_lines = []
         try:
-            with open(path, 'r') as fd:
-                for line in [line.rstrip() for line in fd.readlines()]:
-                    self.lines.append(line)
-                    if line == '' or RE_COMMENT.match(line):
-                        self.__comment_lines__.append(line)
-                    else:
-                        config_lines.append(line)
+            for line in [line.rstrip() for line in fd.readlines()]:
+                self.lines.append(line)
+                if line == '' or RE_COMMENT.match(line):
+                    self.__comment_lines__.append(line)
+                else:
+                    config_lines.append(line)
         except Exception as e:
-            raise VyOSConfigError('Error reading {}: {}'.format(path, e))
+            raise VyOSConfigError('Error reading {}: {}'.format(fd, e))
 
         section = self.__config__
         for line in config_lines:
